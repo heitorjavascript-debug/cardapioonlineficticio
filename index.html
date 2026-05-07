@@ -1,430 +1,412 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Forno & Sabor</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bella Massa | Pizzeria Premium</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        :root {
+            --primary: #ff471a;
+            --primary-hover: #e63e15;
+            --accent: #ffb300;
+            --bg: #0a0a0a;
+            --card-bg: #161616;
+            --text: #ffffff;
+            --text-dim: #a0a0a0;
+            --shadow: 0 8px 30px rgba(0,0,0,0.5);
+            --glass: rgba(255, 255, 255, 0.03);
+        }
 
-<style>
-:root{
-    --primary:#ff4d00;
-    --secondary:#ffb300;
-    --dark:#0f0f0f;
-    --card:#1b1b1b;
-}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
 
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family: Arial, sans-serif;
-}
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
 
-body{
-    background: var(--dark);
-    color:white;
-}
+        /* --- Header & Banner --- */
+        header {
+            height: 40vh;
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(10,10,10,1)), 
+                        url('https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=1200&q=80');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+        }
 
+        header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            color: var(--primary);
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+            animation: fadeInDown 0.8s ease;
+        }
 
-header{
-    padding:20px;
-    text-align:center;
-    background: rgba(255,77,0,0.08);
-    backdrop-filter: blur(10px);
-    border-bottom:1px solid rgba(255,255,255,0.1);
-}
+        header p {
+            font-weight: 300;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-size: 0.9rem;
+        }
 
-header h1{
-    color:var(--primary);
-}
+        /* --- Categorias (Tabs) --- */
+        .tabs-container {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(15px);
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
 
+        .tabs {
+            display: flex;
+            overflow-x: auto;
+            gap: 12px;
+            padding: 0 20px;
+            scrollbar-width: none; /* Firefox */
+        }
 
-.tabs{
-    display:flex;
-    overflow-x:auto;
-    gap:10px;
-    padding:15px;
-}
+        .tabs::-webkit-scrollbar { display: none; } /* Chrome/Safari */
 
-.tab{
-    padding:10px 15px;
-    background:#1a1a1a;
-    border-radius:20px;
-    cursor:pointer;
-    transition:0.2s;
-}
+        .tab {
+            padding: 10px 22px;
+            background: var(--glass);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 50px;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-dim);
+        }
 
-.tab.active, .tab:hover{
-    background:var(--primary);
-}
+        .tab.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 4px 15px rgba(255, 71, 26, 0.4);
+        }
 
+        /* --- Grid de Produtos --- */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 25px;
+            min-height: 100vh;
+        }
 
-.content{
-    display:none;
-    padding:20px;
-}
+        .content {
+            display: none;
+            animation: fadeInUp 0.5s ease;
+        }
 
-.content.active{
-    display:block;
-}
+        .content.active { display: block; }
 
-.grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-    gap:15px;
-}
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
 
+        .card {
+            background: var(--card-bg);
+            border-radius: 24px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.03);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+        }
 
-.card{
-    background:var(--card);
-    padding:15px;
-    border-radius:15px;
-    transition:0.3s;
-}
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow);
+            border-color: rgba(255,255,255,0.1);
+        }
 
-.card:hover{
-    transform:translateY(-5px);
-    box-shadow:0 10px 25px rgba(0,0,0,0.5);
-}
+        .card-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
 
-.img{
-    height:140px;
-    background:#333;
-    border-radius:10px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:12px;
-    color:#aaa;
-    margin-bottom:10px;
-}
+        .card:hover .card-img { transform: scale(1.1); }
 
-.price{
-    color:var(--secondary);
-    font-weight:bold;
-}
-button.add{
-    margin-top:10px;
-    width:100%;
-    padding:12px;
-    border:none;
-    border-radius:10px;
-    background: linear-gradient(135deg, #ff4d00, #ff7a00);
-    color:white;
-    font-weight:bold;
-    cursor:pointer;
-    transition:0.2s;
-    box-shadow:0 4px 10px rgba(255,77,0,0.3);
-}
+        .card-body { padding: 20px; }
 
-.cart .add:hover{
-    transform:translateY(-2px);
-    box-shadow:0 6px 15px rgba(255,77,0,0.5);
-}
+        .card-body h3 {
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+        }
 
-.cart .add:active{
-    transform:scale(0.97);
-}
+        .card-body p {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            margin-bottom: 15px;
+            height: 40px;
+            overflow: hidden;
+        }
 
-.cart{
-    position:fixed;
-    bottom:0;
-    width:100%;
-    background:#111;
-    padding:15px;
-    border-top:1px solid #333;
-    display:flex;
-    justify-content:space-between;
-}
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-.local{
-    text-align:center;
-    padding:20px;
-    opacity:0.7;
-}
+        .price {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--accent);
+        }
 
-.cart button{
-    padding:12px 20px;
-    border:none;
-    border-radius:12px;
-    background: linear-gradient(135deg, #00c853, #00e676);
-    color:white;
-    font-weight:bold;
-    cursor:pointer;
-    transition:0.25s;
-    box-shadow:0 4px 12px rgba(0,200,83,0.4);
-    font-size:14px;
-}
+        .btn-add {
+            background: var(--primary);
+            color: white;
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+        }
 
-.cart button:hover{
-    transform:translateY(-2px);
-    box-shadow:0 6px 18px rgba(0,200,83,0.6);
-}
+        .btn-add:active { transform: scale(0.9); }
 
-.cart button:active{
-    transform:scale(0.95);
-}
-</style>
+        /* --- Carrinho Flutuante --- */
+        .cart-bar {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 500px;
+            background: var(--primary);
+            padding: 15px 25px;
+            border-radius: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 10px 40px rgba(255, 71, 26, 0.4);
+            z-index: 1000;
+            cursor: pointer;
+            display: none; /* Surge quando houver itens */
+            animation: slideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .cart-info span { font-weight: 600; font-size: 1.1rem; }
+
+        /* --- Animações --- */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideUp {
+            from { bottom: -100px; }
+            to { bottom: 20px; }
+        }
+
+        /* --- Responsividade --- */
+        @media (max-width: 600px) {
+            header h1 { font-size: 2.2rem; }
+            .grid { grid-template-columns: 1fr; }
+            .container { padding: 15px; }
+        }
+    </style>
 </head>
-
 <body>
 
 <header>
-    <h1>🔥 FORNO & SABOR</h1>
-    <p>Pizza de verdade no forno a lenha</p>
+    <h1>BELLA MASSA</h1>
+    <p><i data-lucide="flame" style="display:inline; width:16px; color:var(--primary)"></i> Forno a Lenha & Tradição</p>
 </header>
 
-<div class="tabs">
-    <div class="tab active" onclick="trocar('trad')">Tradicionais</div>
-    <div class="tab" onclick="trocar('esp')">Especiais</div>
-    <div class="tab" onclick="trocar('comb')">Combos</div>
-    <div class="tab" onclick="trocar('refri')">Refris</div>
-    <div class="tab" onclick="trocar('esfiha')">Esfirras</div>
+<div class="tabs-container">
+    <div class="tabs" id="tabList">
+        <div class="tab active" onclick="trocar(event, 'pizzas')">Pizzas Clássicas</div>
+        <div class="tab" onclick="trocar(event, 'premium')">Pizzas Premium</div>
+        <div class="tab" onclick="trocar(event, 'entradas')">Entradas</div>
+        <div class="tab" onclick="trocar(event, 'doces')">Sobremesas</div>
+        <div class="tab" onclick="trocar(event, 'bebidas')">Bebidas</div>
+    </div>
 </div>
 
-<div id="trad" class="content active">
-<div class="grid">
+<main class="container">
+    <div id="pizzas" class="content active">
+        <div class="grid">
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1574071318508-1cdbad80ad38?auto=format&fit=crop&w=500&q=80" class="card-img" alt="Margherita">
+                <div class="card-body">
+                    <h3>Margherita</h3>
+                    <p>Molho de tomate pelado, mussarela de búfala, manjericão fresco e azeite.</p>
+                    <div class="price-row">
+                        <div class="price">R$ 44,90</div>
+                        <button class="btn-add" onclick="add('Margherita', 44.90)"><i data-lucide="plus"></i></button>
+                    </div>
+                </div>
+            </div>
 
-<div class="card">
-<div class="img">imagem pizza mussarela</div>
-<h3>Mussarela</h3>
-<div class="price">R$ 34,90</div>
-<button class="add" onclick="add('Mussarela',34.9)">Adicionar</button>
-</div>
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1628840042765-356cda07504e?auto=format&fit=crop&w=500&q=80" class="card-img" alt="Pepperoni">
+                <div class="card-body">
+                    <h3>Pepperoni</h3>
+                    <p>Mussarela especial, fatias de pepperoni artesanal e orégano chileno.</p>
+                    <div class="price-row">
+                        <div class="price">R$ 49,90</div>
+                        <button class="btn-add" onclick="add('Pepperoni', 49.90)"><i data-lucide="plus"></i></button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=500&q=80" class="card-img" alt="Calabresa">
+                <div class="card-body">
+                    <h3>Calabresa VIP</h3>
+                    <p>Calabresa defumada, cebola roxa, azeitonas pretas e toque de pimenta.</p>
+                    <div class="price-row">
+                        <div class="price">R$ 42,90</div>
+                        <button class="btn-add" onclick="add('Calabresa VIP', 42.90)"><i data-lucide="plus"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<div class="card">
-<div class="img">imagem pizza calabresa</div>
-<h3>Calabresa</h3>
-<div class="price">R$ 36,90</div>
-<button class="add" onclick="add('Calabresa',36.9)">Adicionar</button>
-</div>
+    <div id="premium" class="content">
+        <div class="grid">
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=500&q=80" class="card-img" alt="Trufas">
+                <div class="card-body">
+                    <h3>Trufa Branca</h3>
+                    <p>Mix de cogumelos, azeite trufado, queijo brie e finalização com mel.</p>
+                    <div class="price-row">
+                        <div class="price">R$ 79,90</div>
+                        <button class="btn-add" onclick="add('Trufa Branca', 79.90)"><i data-lucide="plus"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<div class="card">
-<div class="img">imagem pizza bacon</div>
-<h3>Bacon</h3>
-<div class="price">R$ 37,90</div>
-<button class="add" onclick="add('Bacon',37.9)">Adicionar</button>
-</div>
+    <div id="bebidas" class="content">
+        <div class="grid">
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=500&q=80" class="card-img" alt="Coca">
+                <div class="card-body">
+                    <h3>Coca-Cola Original</h3>
+                    <p>Lata 350ml gelada.</p>
+                    <div class="price-row">
+                        <div class="price">R$ 7,00</div>
+                        <button class="btn-add" onclick="add('Coca-Cola', 7.00)"><i data-lucide="plus"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
 
-<div class="card">
-<div class="img">imagem pizza marguerita</div>
-<h3>Marguerita</h3>
-<div class="price">R$ 35,90</div>
-<button class="add" onclick="add('Marguerita',35.9)">Adicionar</button>
-</div>
-
-
-<div class="card">
-<div class="img">imagem pizza frango e catupiry </div>
-<h3>Frango com Catupiry</h3>
-<div class="price">R$ 33,90</div>
-<button class="add" onclick="add('Frango com Catupiry',33.9)">Adicionar</button>
-</div>
-
-<div class="card">
-<div class="img">imagem pizza portuguesa</div>
-<h3>Portuguesa</h3>
-<div class="price">R$ 34,90</div>
-<button class="add" onclick="add('Portuguesa',34.9)">Adicionar</button>
-</div>
-
-<div class="card">
-<div class="img">imagem pizza peperoni</div>
-<h3>Pepperoni</h3>
-<div class="price">R$ 34,90</div>
-<button class="add" onclick="add('Pepperoni',34.9)">Adicionar</button>
-</div>
-
-<div class="card">
-<div class="img">imagem brocolis</div>
-<h3>Brócolis com Bacon</h3>
-<div class="price">R$ 34,90</div>
-<button class="add" onclick="add('Brócolis com Bacon',34.9)">Adicionar</button>
-
-
-</div>
-
-<div class="card">
-<div class="img">imagem pizza napolitana</div>
-<h3>Napolitana</h3>
-<div class="price">R$ 34,90</div>
-<button class="add" onclick="add('Napolitana',34.9)">Adicionar</button>
-</div>
-
-<div class="card">
-<div class="img">imagem pizza lombo</div>
-<h3>Lombo canadense</h3>
-<div class="price">R$ 34,90</div>
-<button class="add" onclick="add('Lombo canadense',34.9)">Adicionar</button>
-</div>
-
-</div>
-</div>
-
-
-<div id="esp" class="content">
-<div class="grid">
-
-<div class="card">
-<div class="img">imagem pizza nordestina</div>
-<h3>Nordestina</h3>
-<div class="price">R$ 45,90</div>
-<button class="add" onclick="add('Nordestina',45.9)">Adicionar</button>
-</div>
-
-<div class="card">
-<div class="img">imagem pizza camarão</div>
-<h3>Camarão</h3>
-<div class="price">R$ 49,90</div>
-<button class="add" onclick="add('Camarão',49.9)">Adicionar</button>
-</div>
-
-<div class="card">
-<div class="img">imagem pizza picanha</div>
-<h3>Picanha</h3>
-<div class="price">R$ 52,90</div>
-<button class="add" onclick="add('Picanha',52.9)">Adicionar</button>
-</div>
-
-</div>
-</div>
-
-
-<div id="comb" class="content">
-<div class="grid">
-
-<div class="card">
-<h3>Combo Casal</h3>
-<p>1 pizza + refri + sobremesa</p>
-<div class="price">R$ 79,90</div>
-<button class="add" onclick="add('Combo Casal',79.9)">Adicionar</button>
-</div>
-
-<div class="card">
-<h3>Combo Família</h3>
-<p>2 pizzas + refri</p>
-<div class="price">R$ 99,90</div>
-<button class="add" onclick="add('Combo Família',99.9)">Adicionar</button>
-</div>
-
-<div class="card">
-<h3>Combo Festa</h3>
-<p>3 pizzas + refri 2L</p>
-<div class="price">R$ 149,90</div>
-<button class="add" onclick="add('Combo Festa',149.9)">Adicionar</button>
-</div>
-
-</div>
-</div>
-
-
-<div id="refri" class="content">
-<div class="grid">
-
-<div class="card">
-<div class="img">imagem coca cola</div>
-<h3>Coca-Cola 2L</h3>
-<div class="price">R$ 12,00</div>
-<button class="add" onclick="add('Coca 2L',12)">Adicionar</button>
-</div>
-
-<div class="card">
-<div class="img">imagem fanta</div>
-<h3>Fanta 2L</h3>
-<div class="price">R$ 11,00</div>
-<button class="add" onclick="add('Fanta 2L',11)">Adicionar</button>
-</div>
-
-<div class="card">
-<div class="img">imagem guaraná</div>
-<h3>Guaraná 2L</h3>
-<div class="price">R$ 10,00</div>
-<button class="add" onclick="add('Guaraná',10)">Adicionar</button>
-</div>
-
-</div>
-</div>
-
-
-<div id="esfiha" class="content">
-<div class="grid">
-
-<div class="card">
-<div class="img">imagem esfirra carne</div>
-<h3>Carne</h3>
-<div class="price">R$ 6,00</div>
-<button class="add" onclick="add('Esfirra carne',6)">Adicionar</button>
-</div>
-
-<div class="card">
-<div class="img">imagem esfirra frango</div>
-<h3>Frango</h3>
-<div class="price">R$ 6,00</div>
-<button class="add" onclick="add('Esfirra frango',6)">Adicionar</button>
-</div>
-
-<div class="card">
-<div class="img">imagem esfirra queijo</div>
-<h3>Queijo</h3>
-<div class="price">R$ 5,50</div>
-<button class="add" onclick="add('Esfirra queijo',5.5)">Adicionar</button>
-</div>
-
-<div class="card">
-<div class="img">imagem esfirra chocolate</div>
-<h3>Chocolate</h3>
-<div class="price">R$ 7,00</div>
-<button class="add" onclick="add('Esfirra chocolate',7)">Adicionar</button>
-</div>
-
-</div>
-</div>
-
-<div class="local">
-📍 Rua Fictícia, 30 - Bairro Fictício
-</div>
-
-
-<div class="cart">
-<span id="total">Total: R$ 0,00</span>
-<button onclick="pedido()">Finalizar</button>
+<div class="cart-bar" id="cartBar" onclick="finalizarPedido()">
+    <div class="cart-info">
+        <p id="cartCount">0 Itens no carrinho</p>
+        <span id="cartTotal">R$ 0,00</span>
+    </div>
+    <div style="display:flex; align-items:center; gap:10px">
+        <span>Fechar Pedido</span>
+        <i data-lucide="shopping-cart"></i>
+    </div>
 </div>
 
 <script>
-let total = 0;
-let itens = [];
+    // Inicializar ícones
+    lucide.createIcons();
 
-function add(nome, preco){
-    total += preco;
-    itens.push(nome);
-    atualizar();
-}
+    let cart = [];
+    let total = 0;
 
-function atualizar(){
-    document.getElementById("total").innerText =
-    "Total: R$ " + total.toFixed(2).replace('.',',');
-}
+    function trocar(event, id) {
+        // Mudar abas
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        event.currentTarget.classList.add('active');
 
-function pedido(){
-    if(itens.length === 0){
-        alert("Adicione algo!");
-        return;
+        // Mudar conteúdo
+        document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+
+        // Scroll suave até o topo do conteúdo
+        window.scrollTo({ top: 300, behavior: 'smooth' });
     }
 
-    let msg = "Pedido:%0A";
-    itens.forEach(i => msg += "- "+i+"%0A");
-    msg += "%0ATotal: R$ " + total.toFixed(2);
+    function add(nome, preco) {
+        cart.push({ nome, preco });
+        total += preco;
+        atualizarInterface();
+        
+        // Feedback visual simples
+        const btn = event.currentTarget;
+        btn.innerHTML = '<i data-lucide="check"></i>';
+        btn.style.background = '#28a745';
+        lucide.createIcons();
+        
+        setTimeout(() => {
+            btn.innerHTML = '<i data-lucide="plus"></i>';
+            btn.style.background = 'var(--primary)';
+            lucide.createIcons();
+        }, 1000);
+    }
 
-    window.open(`https://wa.me/5588999999999?text=${msg}`);
-}
+    function atualizarInterface() {
+        const cartBar = document.getElementById('cartBar');
+        const cartTotal = document.getElementById('cartTotal');
+        const cartCount = document.getElementById('cartCount');
 
-function trocar(id){
-    document.querySelectorAll('.content').forEach(c=>c.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
+        if (cart.length > 0) {
+            cartBar.style.display = 'flex';
+        }
 
-    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-    event.target.classList.add('active');
-}
+        cartTotal.innerText = `Total: R$ ${total.toFixed(2).replace('.', ',')}`;
+        cartCount.innerText = `${cart.length} ${cart.length === 1 ? 'item' : 'itens'} no carrinho`;
+    }
+
+    function finalizarPedido() {
+        if (cart.length === 0) return;
+
+        let msg = "*Novo Pedido - Bella Massa*%0A%0A";
+        cart.forEach(item => {
+            msg += `• ${item.nome} - R$ ${item.preco.toFixed(2)}%0A`;
+        });
+        msg += `%0A*Total: R$ ${total.toFixed(2)}*%0A%0A_Por favor, confirme meu endereço de entrega._`;
+
+        // Substitua pelo seu número real
+        const fone = "5588999999999"; 
+        window.open(`https://wa.me/${fone}?text=${msg}`);
+    }
 </script>
 
 </body>
